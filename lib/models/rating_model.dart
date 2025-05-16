@@ -30,7 +30,10 @@ class Rating {
   }
 
   factory Rating.fromMap(Map<String, dynamic> map) {
-    return Rating(rate: map['rate'] as double, count: map['count'] as int);
+    return Rating(
+      rate: map['rate'].toDouble() ?? 0.0,
+      count: map['count'] ?? 0,
+    );
   }
 
   //</editor-fold>

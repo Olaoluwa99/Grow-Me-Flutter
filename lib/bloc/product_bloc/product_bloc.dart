@@ -10,7 +10,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductRepository productRepository;
   ProductBloc(this.productRepository) : super(ProductInitial()) {
     on<ProductFetched>(_getAllProducts);
+    on<ProductCategoryFetched>(_setChosenCategory);
   }
+
   void _getAllProducts(ProductFetched event, Emitter<ProductState> emit) async {
     emit(ProductLoading());
     try {
@@ -18,6 +20,19 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(ProductSuccess(products: productList));
     } catch (e) {
       emit(ProductFailure(e.toString()));
+    }
+  }
+
+  void _setChosenCategory(
+    ProductCategoryFetched event,
+    Emitter<ProductState> emit,
+  ) {
+    if (state is ProductSuccess) {
+      final currentState = state as ProductSuccess;
+      emit(ChosenSuccess(products: currentState.products, tag: event.category));
+    } else if (state is ChosenSuccess) {
+      final currentState = state as ChosenSuccess;
+      emit(ChosenSuccess(products: currentState.products, tag: event.category));
     }
   }
 }
