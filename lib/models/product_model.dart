@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:grow_me_bloc/data/repository/rating_model.dart';
+import 'package:grow_me_bloc/models/rating_model.dart';
 
 class ProductModel {
   final int id;
@@ -92,12 +92,12 @@ class ProductModel {
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-      id: map['id'] as int,
-      title: map['title'] as String,
-      price: map['price'] as double,
-      description: map['description'] as String,
-      category: map['category'] as String,
-      image: map['image'] as String,
+      id: map['id'] ?? 0,
+      title: map['title'] ?? '',
+      price: map['price'].toDouble() ?? 0.0,
+      description: map['description'] ?? '',
+      category: map['category'] ?? '',
+      image: map['image'] ?? '',
       rating:
           map['rating'] != null
               ? Rating.fromMap(map['rating'] as Map<String, dynamic>)

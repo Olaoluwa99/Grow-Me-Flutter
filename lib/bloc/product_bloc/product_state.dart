@@ -16,3 +16,9 @@ final class ProductFailure extends ProductState {
 }
 
 final class ProductLoading extends ProductState {}
+
+final class ChosenSuccess extends ProductState {
+  final List<ProductModel> products;
+  final String tag;
+  ChosenSuccess({required this.products, required this.tag});
+}

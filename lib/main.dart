@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grow_me_bloc/data/data_provider/product_provider.dart';
-import 'package:grow_me_bloc/presentation/cart/screens/categories_screen.dart';
-import 'package:grow_me_bloc/product_bloc/product_bloc.dart';
+import 'package:grow_me_bloc/presentation/categories/screens/categories_screen.dart';
 
+import 'bloc/product_bloc/product_bloc.dart';
 import 'data/repository/product_repository.dart';
 
 void main() {
