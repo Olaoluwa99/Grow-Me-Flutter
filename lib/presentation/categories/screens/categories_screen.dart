@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grow_me_bloc/presentation/cart/screens/products_screen.dart';
 import 'package:grow_me_bloc/presentation/categories/widgets/category_item.dart';
+import 'package:grow_me_bloc/presentation/products/screens/products_screen.dart';
 
 import '../../../bloc/product_bloc/product_bloc.dart';
+import '../../cart/screens/cart_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -41,6 +42,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     final productBloc = BlocProvider.of<ProductBloc>(context);
     return Scaffold(
       appBar: AppBar(title: Text('Categories')),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.shopping_cart),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return CartScreen();
+              },
+            ),
+          );
+        },
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: BlocBuilder<ProductBloc, ProductState>(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grow_me_bloc/bloc/cart_bloc/cart_bloc.dart';
 import 'package:grow_me_bloc/data/data_provider/product_provider.dart';
 import 'package:grow_me_bloc/presentation/categories/screens/categories_screen.dart';
 
@@ -18,8 +19,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider(
       create: (context) => ProductRepository(ProductProvider()),
-      child: BlocProvider(
-        create: (context) => ProductBloc(context.read<ProductRepository>()),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ProductBloc(context.read<ProductRepository>()),
+          ),
+          BlocProvider(create: (context) => CartBloc()),
+        ],
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
