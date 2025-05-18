@@ -10,6 +10,11 @@ abstract class CartSuccessBase extends CartState {
   CartSuccessBase({required this.cartItems});
 }
 
+final class CartLoadSuccess extends CartSuccessBase {
+  final List<CartModel> cartItems;
+  CartLoadSuccess({required this.cartItems}) : super(cartItems: cartItems);
+}
+
 final class CartAddSuccess extends CartSuccessBase {
   final List<CartModel> cartItems;
   CartAddSuccess({required this.cartItems}) : super(cartItems: cartItems);
@@ -35,6 +40,11 @@ final class CartItemDecreaseSuccess extends CartSuccessBase {
 final class CartFailure extends CartState {
   final String error;
   CartFailure(this.error);
+}
+
+final class CartClearedSuccess extends CartState {
+  final String notice;
+  CartClearedSuccess(this.notice);
 }
 
 final class CartLoading extends CartState {}
