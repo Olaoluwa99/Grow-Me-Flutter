@@ -15,12 +15,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartItemRemoved>(_removeFromCart);
     on<CartItemCountIncreased>(_increaseCount);
     on<CartItemCountDecreased>(_decreaseCount);
+    on<CartCleared>(_clearCart);
 
     add(CartStarted());
   }
 
   void _onStarted(CartStarted event, Emitter<CartState> emit) {
-    emit(CartAddSuccess(cartItems: _allItems)); // or create a CartLoadSuccess
+    emit(CartLoadSuccess(cartItems: _allItems));
   }
 
   void _addToCart(CartItemAdded event, Emitter<CartState> emit) {
@@ -69,5 +70,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       ..addAll(updatedItems);
 
     emit(CartItemDecreaseSuccess(cartItems: List.from(_allItems)));
+  }
+
+  void _clearCart(CartCleared event, Emitter<CartState> emit) {
+    emit(CartLoading());
+    _allItems.clear();
+    emit(CartClearedSuccess('All items have been Checked out.'));
+    emit(CartLoadSuccess(cartItems: _allItems));
   }
 }

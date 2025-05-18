@@ -34,3 +34,5 @@ class CartItemCountDecreased extends CartEvent {
   final CartModel item;
   CartItemCountDecreased(this.item);
 }
+
+class CartCleared extends CartEvent {}

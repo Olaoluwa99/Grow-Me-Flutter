@@ -40,6 +40,12 @@ class _CartScreenState extends State<CartScreen> {
           if (state is CartLoading) {
             // optional loading snack or UI changes
           }
+
+          if (state is CartClearedSuccess) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.notice)));
+          }
         },
         child: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
@@ -55,51 +61,76 @@ class _CartScreenState extends State<CartScreen> {
               if (state.cartItems.isNotEmpty) {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: ListView.builder(
-                    itemCount: state.cartItems.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: CartItem(
-                          onClick: () {
-                            context.read<CartBloc>().add(
-                              CartItemRemoved(
-                                CartModel(
-                                  title: state.cartItems[index].title,
-                                  count: state.cartItems[index].count,
-                                  product: state.cartItems[index].product,
-                                ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: state.cartItems.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12.0),
+                              child: CartItem(
+                                onClick: () {
+                                  context.read<CartBloc>().add(
+                                    CartItemRemoved(
+                                      CartModel(
+                                        title: state.cartItems[index].title,
+                                        count: state.cartItems[index].count,
+                                        product: state.cartItems[index].product,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                onIncreaseClick: () {
+                                  context.read<CartBloc>().add(
+                                    CartItemCountIncreased(
+                                      state.cartItems[index],
+                                    ),
+                                  );
+                                },
+                                onDecreaseClick: () {
+                                  context.read<CartBloc>().add(
+                                    CartItemCountDecreased(
+                                      state.cartItems[index],
+                                    ),
+                                  );
+                                },
+                                item: state.cartItems[index],
                               ),
                             );
                           },
-                          onIncreaseClick: () {
-                            context.read<CartBloc>().add(
-                              CartItemCountIncreased(state.cartItems[index]),
-                            );
-                          },
-                          onDecreaseClick: () {
-                            context.read<CartBloc>().add(
-                              CartItemCountDecreased(state.cartItems[index]),
-                            );
-                          },
-                          /*onIncreaseClick: () {
-                            context.read<CartBloc>().add(
-                              CartItemCountIncreased(
-                                state.cartItems[index].product.id.toString(),
-                              ),
-                            );
-                          },
-                          onDecreaseClick: () {
-                            context.read<CartBloc>().add(
-                              CartItemCountDecreased(
-                                state.cartItems[index].product.id.toString(),
-                              ),
-                            );
-                          },*/
-                          item: state.cartItems[index],
                         ),
-                      );
-                    },
+                      ),
+                      if (state.cartItems.isNotEmpty)
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<CartBloc>().add(CartCleared());
+                          },
+                          style: ButtonStyle(
+                            padding: WidgetStateProperty.all<EdgeInsets>(
+                              EdgeInsets.symmetric(
+                                horizontal: 24.0,
+                                vertical: 16.0,
+                              ),
+                            ),
+                          ),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Checkout',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(width: 8),
+                                Icon(Icons.shopping_cart_checkout),
+                              ],
+                            ),
+                          ),
+                        ),
+                      SizedBox(height: 24),
+                    ],
                   ),
                 );
               } else {
